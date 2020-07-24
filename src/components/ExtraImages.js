@@ -1,57 +1,71 @@
 import React from 'react';
-import './ExtraImages.css';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
+import theDogApi from '../apis/theDogApi';
+import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-
-const ExtraImages = ({ extraImages, favoriteImages, handleFavorite }) => {
-
-	// const handleFavoriteStyle = (imageId) => {
-	// 	console.log(favoriteImages.includes(imageId));
-	// }
-
-	
-
-	const renderedList = extraImages.map((image) => {
-		// console.log(image.id);
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 
-		// const faveImageIds = favoriteImages.map((image) => {
-		// 	const idArray = {};
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: 'red',
+  },
+  extras: {
+  	padding: 10
+  },
+  gridList: {
+    flexWrap: 'nowrap',
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: 'translateZ(0)',
+  },
+  title: {
+    color: 'white',
+  },
+  titleBar: {
+    background:
+      'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+  },
+});
 
-		// 	idArray['image_id'] = image.image_id;
 
-		// 	return idArray;
-		// });
+const ExtraImages = ({ extraImages }) => {
+	const classes = useStyles();
 
-		// console.log(faveImageIds)
-		//const faveIds = favoriteImages.map((fimage) => {fimage.image_id});
-		//console.log(faveIds);
-		// const check = favoriteImages.map((fimage) => {
-		// 	if (fimage.id === image.id ) {
-		// 		return 'faved'
-		// 	} else {
-		// 		return ''
-		// 	}
-
-		// });
-
-		return (
-			<Card className="photo" key={image.id}>
-				<img alt={image.name} src={image.url} />
-				<CardActions>
-					<IconButton aria-label="add to favorites" key={image.id} onClick={() => handleFavorite(image.id)}>
-			          <FavoriteIcon />
-			        </IconButton>
-				</CardActions>
-			</Card>
-		);
-	});
+	const handleFavorite = async (imageId) => {
+		try {
+	        const response = await theDogApi.post('/favourites',
+				{
+					'imag_id': imageId,
+				}
+			);
+			console.log(response)
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
 	return(
-		<div className="extras">
-			{renderedList}
+		<div className={classes.extras}>
+			<GridList className={classes.gridList} cols={2.5}>
+		        {extraImages.map((tile) => (
+		         	<GridListTile key={tile.id}>
+		            	<img src={tile.url} alt={tile.name} />
+		            	<GridListTileBar title={tile.name} classes={{root: classes.titleBar,title: classes.title,}}
+			              actionIcon={
+			                <IconButton aria-label={`fave ${tile.name}`} onClick={() => handleFavorite(tile.id)}>
+			                  <FavoriteIcon className={classes.title} />
+			                </IconButton>
+			              }
+		            	/>
+		          	</GridListTile>
+		       	))}
+		    </GridList>
 		</div>
 	);
 };

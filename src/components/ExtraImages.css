@@ -3,9 +3,14 @@
 }
 
 .extras {
-	background: #bbb;
-	padding: 10px;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-evenly;
+	background: #666;
+    padding: 10px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 10px;
+    column-gap-spacing: 10px;
+}
+
+.extras img {
+	height: 140px;
 }

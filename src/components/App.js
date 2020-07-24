@@ -8,6 +8,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 
+import Route from './Route';
+
 
 const reorderList = (list, startIndex, endIndex) => {
 	const result = Array.from(list);
@@ -20,6 +22,7 @@ const reorderList = (list, startIndex, endIndex) => {
 const useStyles = makeStyles({
 	root: {
 		padding: 10,
+		maxWidth: 600
 	},
 	pad: {
 		padding: 10
@@ -29,11 +32,7 @@ const useStyles = makeStyles({
 //const classes = useStyles();	
 
 const App = () => {
-	const [breeds, setBreeds] = useState([]);
 	const [list, setList] = useState([]);
-	const [breedExtraImages, setBreedExtraImages] = useState([]);
-	const [favoriteImages, setFavoriteImages] = useState([]);
-	const [newFavorite, setNewFavorite] = useState([]);
 
 	const classes = useStyles();
 
@@ -42,48 +41,19 @@ const App = () => {
 	}, []);
 
 	const onLoadSubmit = async () => {
-		const response = await theDogApi.get('/images/search',{
-			params: {
-				limit: 10,
-				size: 'full',
-				order: 'ASC'
-			},
-		})
-		
-		setList(response.data);
-	};
-
-	const onBreedSelect = async (selectedBreedId) => {
-		const response = await theDogApi.get('images/search', {
-			params: {
-				breed_id: selectedBreedId,
-				limit: 3,
-				size: 'small'
-			},
-		});
-
-		setBreedExtraImages(response.data);
-	};
-
-	const handleFavorite = async (imageId) => {
-		console.log('fave img: ', imageId);
-		
-		const response = await theDogApi.post('/favourites',
-			{
-				'image_id': imageId,
-				//'sub_id': 'user-chardp'
-			}
-		);
-
-		setNewFavorite(response.data);
-		console.log('handle favorite: ', response.data);
-	};
-
-	const getFavorites = async () => {
-		const response = await theDogApi.get('/favourites', {});
-
-		console.log('load favorites', response.data);
-		setFavoriteImages(response.data);
+		try {
+			const response = await theDogApi.get('/images/search',{
+				params: {
+					limit: 30,
+					size: 'full',
+					order: 'ASC'
+				},
+			})
+			
+			setList(response.data);
+		} catch (err) {
+			console.log(err)
+		}
 	};
 
 	const onDragEnd = (result) => {
@@ -106,21 +76,20 @@ const App = () => {
 		<React.Fragment>
 			<CssBaseline />
 			<Header />
-			<Container className={classes.root}>
-				<DragDropContext onDragEnd={onDragEnd}>
-					<List 
-						title='Dog Breeds'
-						breeds={breeds} 
-						list={list} 
-						onBreedSelect={onBreedSelect}
-						handleFavorite={handleFavorite} 
-						favoriteImages={favoriteImages}
-						breedExtraImages={breedExtraImages} 
-					/>
-				</DragDropContext>
-				<Favorites getFavorites={getFavorites} newFavorite={newFavorite} favoriteImages={favoriteImages} />	
-			</Container>
 			
+			<Route path="/">
+				<Container className={classes.root}>
+					<DragDropContext onDragEnd={onDragEnd}>
+						<List 
+							title='Dog Breeds'
+							list={list} 
+						/>
+					</DragDropContext>
+				</Container>
+			</Route>
+			<Route path="/favorites">
+				<Favorites />	
+			</Route>
 		</React.Fragment>
 	);
 
