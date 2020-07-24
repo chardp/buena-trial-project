@@ -1,14 +1,12 @@
-import React from 'react';
-import './App.css';
-import Header from './Header';
+import React, { useState, useEffect } from 'react';
 import theDogApi from '../apis/theDogApi';
+import Header from './Header';
 import List from './List';
-import { DragDropContext } from 'react-beautiful-dnd';
 import Favorites from './Favorites';
-import Votes from './Votes';
+import { DragDropContext } from 'react-beautiful-dnd';
+import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-import { makeStyles } from '@material-ui/core/styles';
 
 
 const reorderList = (list, startIndex, endIndex) => {
@@ -19,28 +17,31 @@ const reorderList = (list, startIndex, endIndex) => {
   	return result;
 };
 
-// const useStyles = makeStyles({
-// 	root: {
-// 		//padding: 10,
-// 		//background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)'
-// 		background: '#ccc'
-// 	},
-// 	pad: {
-// 		padding: 10
-// 	}
-// });
+const useStyles = makeStyles({
+	root: {
+		padding: 10,
+	},
+	pad: {
+		padding: 10
+	}
+});
 
 //const classes = useStyles();	
 
-class App extends React.Component {
-	state = { breeds: [], list: [], breedExtraImages: [], favoriteImages: [], newFavorite: [] };
+const App = () => {
+	const [breeds, setBreeds] = useState([]);
+	const [list, setList] = useState([]);
+	const [breedExtraImages, setBreedExtraImages] = useState([]);
+	const [favoriteImages, setFavoriteImages] = useState([]);
+	const [newFavorite, setNewFavorite] = useState([]);
 
-	componentDidMount() {
-		this.onLoadSubmit();
-	}
+	const classes = useStyles();
 
-	onLoadSubmit = async () => {
-		//const response = await theDogApi.get('/breeds');
+	useEffect(() => {
+		onLoadSubmit()
+	}, []);
+
+	const onLoadSubmit = async () => {
 		const response = await theDogApi.get('/images/search',{
 			params: {
 				limit: 10,
@@ -49,15 +50,10 @@ class App extends React.Component {
 			},
 		})
 		
-		this.setState({list: response.data});
-		//this.setState({ breeds: response.data });
+		setList(response.data);
 	};
 
-	// onBreedSelect = (selectedBreedId) => {
-	// 	this.setState({ selectedVideo: video });
-	// }
-
-	onBreedSelect = async (selectedBreedId) => {
+	const onBreedSelect = async (selectedBreedId) => {
 		const response = await theDogApi.get('images/search', {
 			params: {
 				breed_id: selectedBreedId,
@@ -66,22 +62,10 @@ class App extends React.Component {
 			},
 		});
 
-		this.setState({ breedExtraImages: response.data });
-		console.log(response);
+		setBreedExtraImages(response.data);
 	};
 
-	onVote = async (imageId, vote) => {
-		const response = await theDogApi.post('/votes', 
-			{
-				'image_id': imageId,
-				'value': vote
-			}
-		);
-
-		console.log(response);
-	};
-
-	handleFavorite = async (imageId) => {
+	const handleFavorite = async (imageId) => {
 		console.log('fave img: ', imageId);
 		
 		const response = await theDogApi.post('/favourites',
@@ -91,58 +75,55 @@ class App extends React.Component {
 			}
 		);
 
-		this.setState({ newFavorite: response.data });
-		console.log('handle favorite: ', response);
+		setNewFavorite(response.data);
+		console.log('handle favorite: ', response.data);
 	};
 
-	getFavorites = async () => {
+	const getFavorites = async () => {
 		const response = await theDogApi.get('/favourites', {});
 
-		//setVideos(response.data.items);
-
 		console.log('load favorites', response.data);
-		this.setState({ favoriteImages: response.data });
+		setFavoriteImages(response.data);
 	};
 
-	onDragEnd = (result) => {
+	const onDragEnd = (result) => {
 		if (!result.destination) {
 	      return;
 	    }
 
 	    const reorderedBreeds = reorderList(
-    		this.state.list,
+    		list,
     		result.source.index,
     		result.destination.index
     	);
 
-    	this.setState({ list: reorderedBreeds });
+    	setList(reorderedBreeds);
 
 	};
 
-	render() {
-		return (
-			<React.Fragment>
-				<CssBaseline />
-				<Header />
-				<Container>
-					<DragDropContext onDragEnd={this.onDragEnd}>
-						<List 
-							title='Dog Breeds'
-							breeds={this.state.breeds} 
-							list={this.state.list} 
-							onBreedSelect={this.onBreedSelect}
-							handleFavorite={this.handleFavorite} 
-							favoriteImages={this.state.favoriteImages}
-							onVote={this.onVote}
-							breedExtraImages={this.state.breedExtraImages} 
-						/>
-					</DragDropContext>
-				</Container>
-				<Favorites getFavorites={this.getFavorites} newFavorite={this.state.newFavorite} favoriteImages={this.state.favoriteImages} />
-				<Votes onVote={this.onVote} />
-			</React.Fragment>
-		);
-	}
-}
+
+	return (
+		<React.Fragment>
+			<CssBaseline />
+			<Header />
+			<Container className={classes.root}>
+				<DragDropContext onDragEnd={onDragEnd}>
+					<List 
+						title='Dog Breeds'
+						breeds={breeds} 
+						list={list} 
+						onBreedSelect={onBreedSelect}
+						handleFavorite={handleFavorite} 
+						favoriteImages={favoriteImages}
+						breedExtraImages={breedExtraImages} 
+					/>
+				</DragDropContext>
+				<Favorites getFavorites={getFavorites} newFavorite={newFavorite} favoriteImages={favoriteImages} />	
+			</Container>
+			
+		</React.Fragment>
+	);
+
+};
 
 export default App;
