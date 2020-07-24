@@ -1,0 +1,11 @@
+.photo img {
+	max-width: 200px;
+}
+
+.extras {
+	background: #bbb;
+	padding: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
