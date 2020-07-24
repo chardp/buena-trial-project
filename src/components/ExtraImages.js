@@ -33,7 +33,6 @@ const useStyles = makeStyles({
   },
 });
 
-
 const ExtraImages = ({ extraImages }) => {
 	const classes = useStyles();
 
@@ -41,7 +40,7 @@ const ExtraImages = ({ extraImages }) => {
 		try {
 	        const response = await theDogApi.post('/favourites',
 				{
-					'imag_id': imageId,
+					'image_id': imageId,
 				}
 			);
 			console.log(response)

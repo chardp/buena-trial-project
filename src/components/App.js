@@ -29,8 +29,6 @@ const useStyles = makeStyles({
 	}
 });
 
-//const classes = useStyles();	
-
 const App = () => {
 	const [list, setList] = useState([]);
 
@@ -44,7 +42,7 @@ const App = () => {
 		try {
 			const response = await theDogApi.get('/images/search',{
 				params: {
-					limit: 30,
+					limit: 50,
 					size: 'full',
 					order: 'ASC'
 				},
@@ -70,7 +68,6 @@ const App = () => {
     	setList(reorderedBreeds);
 
 	};
-
 
 	return (
 		<React.Fragment>

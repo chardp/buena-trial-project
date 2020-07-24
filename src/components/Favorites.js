@@ -4,8 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-
-
 const useStyles = makeStyles({
 	grid: {
 		display: 'grid',
@@ -22,21 +20,6 @@ const useStyles = makeStyles({
 	img: {
 		width: '100%'
 	},
-	top: {
-		display: 'flex',
-		flexWrap: 'wrap'
-	},
-
-	root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    backgroundColor: 'red',
-  },
-  gridList: {
-    
-  },
 });
 
 const Favorites = () => {	

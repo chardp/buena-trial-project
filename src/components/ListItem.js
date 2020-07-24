@@ -60,7 +60,7 @@ const getDraggableStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle
 });
 
-const ListItem = ({ breed, imageSrc, onBreedSelect, favoriteImages, handleFavorite, onVote, index }) => {
+const ListItem = ({ breed, imageSrc, index }) => {
 	const classes = useStyles();	
 	const [expanded, setExpanded] = useState(false);
 	const [extras, SetExtras] = useState([]);
