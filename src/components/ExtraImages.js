@@ -27,6 +27,9 @@ const useStyles = makeStyles({
   title: {
     color: 'white',
   },
+  faved: {
+  	color: 'red'
+  },
   titleBar: {
     background:
       'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
@@ -43,7 +46,8 @@ const ExtraImages = ({ extraImages }) => {
 					'image_id': imageId,
 				}
 			);
-			console.log(response)
+			if (response.data.message === 'SUCCESS') {}
+			console.log(response.data)
 		} catch (err) {
 			console.error(err);
 		}
@@ -51,7 +55,7 @@ const ExtraImages = ({ extraImages }) => {
 
 	return(
 		<div className={classes.extras}>
-			<GridList className={classes.gridList} cols={2.5}>
+			<GridList className={classes.gridList} cellHeight={180} cols={3.5}>
 		        {extraImages.map((tile) => (
 		         	<GridListTile key={tile.id}>
 		            	<img src={tile.url} alt={tile.name} />

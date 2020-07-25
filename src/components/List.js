@@ -11,7 +11,10 @@ const useStyles = makeStyles({
 	root: {
 		background: '#ccc'
 	},
-	pad: {
+	title: {
+		padding: '10px 10px 0'
+	},
+	list: {
 		padding: 10
 	}
 });
@@ -25,12 +28,11 @@ const List = ({list, title }) => {
 
 	return (
 		<Paper className={classes.root}>
-			
-			<Typography className={classes.pad} variant='h6' component='h1'>{title}</Typography>
+			<Typography className={classes.title} variant='h6' component='h1'>{title}</Typography>
 			{ list.length ?
 				<Droppable droppableId='column-1'>
 					{(provided, snapshot) => (
-						<Paper className={classes.pad} innerRef={provided.innerRef} {...provided.droppableProps} style={getDroppableStyle(snapshot.isDraggingOver)}>
+						<Paper className={classes.list} innerRef={provided.innerRef} {...provided.droppableProps} style={getDroppableStyle(snapshot.isDraggingOver)}>
 							{list.map((listItem, index) => {
 								return <ListItem key={listItem.breeds[0].id} breed={listItem.breeds[0]} imageSrc={listItem.url} index={index} />
 							})}

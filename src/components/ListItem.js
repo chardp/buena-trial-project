@@ -47,16 +47,16 @@ const ListItem = ({ breed, imageSrc, index }) => {
 	const handleExpandClick = () => {
     	setExpanded(!expanded);
     	if (!expanded) {
-	    	onBreedExpand(breed.id);
+	    	onListItemExpand(breed.id);
 		}
 	};
 	
-  	const onBreedExpand = async (selectedBreedId) => {
+  	const onListItemExpand = async (selectedBreedId) => {
 		const response = await dogApi.get('images/search', {
 			params: {
 				breed_id: selectedBreedId,
 				limit: 5,
-				size: 'small',
+				size: 'med',
 				order: 'ASC'
 			},
 		});

@@ -3,6 +3,7 @@ import dogApi from '../apis/dogApi';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import Loader from './Loader';
 
 const useStyles = makeStyles({
 	grid: {
@@ -27,7 +28,8 @@ const useStyles = makeStyles({
 
 const Favorites = () => {	
 	const [favoriteImages, setFavoriteImages] = useState([]);
-	
+	const [isLoaded, setIsLoaded] = useState(false);
+
 	const classes = useStyles();	
 
 	useEffect(() => {
@@ -39,29 +41,31 @@ const Favorites = () => {
 			const response = await dogApi.get('/favourites', {});
 
 			setFavoriteImages(response.data);
-	
+			setIsLoaded(true);
+
 		} catch(err) {
 			console.log('no results')
 		}
 	};
 
-	const renderedView = favoriteImages.map((favorite) => {
-		return (
-			<div key={favorite.id} className={classes.gridItem}>
-      			<img className={classes.img} key={favorite.id} alt={favorite.name} src={favorite.image.url} />
-    		</div>						
-		);
-	});
+	const renderedView = (
+		<div className={classes.grid}>
+  			{favoriteImages.map((favorite) => {
+				return (
+					<div key={favorite.id} className={classes.gridItem}>
+		      			<img className={classes.img} key={favorite.id} alt={favorite.name} src={favorite.image.url} />
+		    		</div>						
+				);
+			})}
+		 </div>
+	);
 
+	const emptyView = (<div className={classes.noResults}>You currently have no favorite images.</div>);
 
 	return (
 		<Container className={classes.pad}>
 			<Typography  variant='h4' component='h1'>Favorite Images</Typography>
-      		
-      		<div className={classes.grid}>
-      			{favoriteImages.length ? renderedView : <div className={classes.noResults}>You currently have no favorite images.</div>}
-		    </div>
-
+      		{ isLoaded ? (favoriteImages.length ? renderedView : emptyView) : <Loader /> }
 		</Container>
 	);
 };
