@@ -55,7 +55,7 @@ const ExtraImages = ({ extraImages }) => {
 
 	return(
 		<div className={classes.extras}>
-			<GridList className={classes.gridList} cellHeight={180} cols={3.5}>
+			<GridList className={classes.gridList} cellHeight={180} cols={2.5}>
 		        {extraImages.map((tile) => (
 		         	<GridListTile key={tile.id}>
 		            	<img src={tile.url} alt={tile.name} />

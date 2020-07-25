@@ -72,7 +72,7 @@ const ListItem = ({ breed, imageSrc, index }) => {
 					{...provided.dragHandleProps}
 					style={getDraggableStyle(snapshot.isDragging,provided.draggableProps.style)}
 				>
-					<div className={classes.flex} onClick={handleExpandClick}>
+					<div className={classes.flex}>
 						<CardMedia className={classes.cover} image={imageSrc} title={breed.name} />
 
 						<CardContent className={classes.content}>
@@ -80,7 +80,7 @@ const ListItem = ({ breed, imageSrc, index }) => {
 							<Typography variant="body2">Height: {breed.height.imperial} in</Typography>
 							<Typography variant="body2">Weight: {breed.weight.imperial} lbs</Typography>
 							<Typography variant="body2">Life Span: {breed.life_span}</Typography>
-							<Button className={classes.more} variant="contained"  color="default">
+							<Button className={classes.more} variant="contained"  color="default" onClick={handleExpandClick}>
 				        		More Images
 				        	</Button>
 						</CardContent>
