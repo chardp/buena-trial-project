@@ -3,21 +3,12 @@ import dogApi from '../apis/dogApi';
 import Header from './Header';
 import List from './List';
 import Favorites from './Favorites';
+import Route from './Route';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 
-import Route from './Route';
-
-
-const reorderList = (list, startIndex, endIndex) => {
-	const result = Array.from(list);
-  	const [removed] = result.splice(startIndex, 1);
-  	result.splice(endIndex, 0, removed);
-
-  	return result;
-};
 
 const useStyles = makeStyles({
 	root: {
@@ -54,6 +45,14 @@ const App = () => {
 		}
 	};
 
+	const reorderList = (list, startIndex, endIndex) => {
+		const result = Array.from(list);
+	  	const [removed] = result.splice(startIndex, 1);
+	  	result.splice(endIndex, 0, removed);
+
+	  	return result;
+	};
+
 	const onDragEnd = (result) => {
 		if (!result.destination) {
 	      return;
@@ -66,14 +65,12 @@ const App = () => {
     	);
 
     	setList(reorderedBreeds);
-
 	};
 
 	return (
 		<React.Fragment>
 			<CssBaseline />
 			<Header />
-			
 			<Route path="/">
 				<Container className={classes.root}>
 					<DragDropContext onDragEnd={onDragEnd}>

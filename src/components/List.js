@@ -1,8 +1,7 @@
 import React from 'react';
 import ListItem from './ListItem';
-import './List.css';
-import { makeStyles } from '@material-ui/core/styles';
 import { Droppable } from 'react-beautiful-dnd';
+import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Loader from './Loader';

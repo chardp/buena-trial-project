@@ -33,7 +33,6 @@ const useStyles = makeStyles({
   },
 });
 
-
 const getDraggableStyle = (isDragging, draggableStyle) => ({
   border: isDragging ? "2px solid #FF8E53" : "",
   ...draggableStyle
@@ -86,10 +85,7 @@ const ListItem = ({ breed, imageSrc, index }) => {
 						</CardContent>
 					</div>
       				<Collapse className={classes.full} in={expanded} timeout="auto" unmountOnExit>
-						<ExtraImages 
-							key={`extra- ${breed.id}`} 
-							extraImages={extras} 
-						/>
+						<ExtraImages key={`extra- ${breed.id}`} extraImages={extras} />
 					</Collapse>
 				</Card>
 			)}
