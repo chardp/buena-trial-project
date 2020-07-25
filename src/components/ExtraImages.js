@@ -1,5 +1,5 @@
 import React from 'react';
-import theDogApi from '../apis/theDogApi';
+import dogApi from '../apis/dogApi';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -38,7 +38,7 @@ const ExtraImages = ({ extraImages }) => {
 
 	const handleFavorite = async (imageId) => {
 		try {
-	        const response = await theDogApi.post('/favourites',
+	        const response = await dogApi.post('/favourites',
 				{
 					'image_id': imageId,
 				}

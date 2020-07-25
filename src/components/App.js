@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import theDogApi from '../apis/theDogApi';
+import dogApi from '../apis/dogApi';
 import Header from './Header';
 import List from './List';
 import Favorites from './Favorites';
@@ -40,7 +40,7 @@ const App = () => {
 
 	const onLoadSubmit = async () => {
 		try {
-			const response = await theDogApi.get('/images/search',{
+			const response = await dogApi.get('/images/search',{
 				params: {
 					limit: 50,
 					size: 'full',
