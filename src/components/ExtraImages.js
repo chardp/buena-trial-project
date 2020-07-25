@@ -1,12 +1,9 @@
 import React from 'react';
-import dogApi from '../apis/dogApi';
 import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-
+import FaveButton from './FaveButton';
 
 const useStyles = makeStyles({
   root: {
@@ -39,31 +36,15 @@ const useStyles = makeStyles({
 const ExtraImages = ({ extraImages }) => {
 	const classes = useStyles();
 
-	const handleFavorite = async (imageId) => {
-		try {
-	        const response = await dogApi.post('/favourites',
-				{
-					'image_id': imageId,
-				}
-			);
-			if (response.data.message === 'SUCCESS') {}
-			console.log(response.data)
-		} catch (err) {
-			console.error(err);
-		}
-	};
-
 	return(
 		<div className={classes.extras}>
 			<GridList className={classes.gridList} cellHeight={180} cols={2.5}>
-		        {extraImages.map((tile) => (
-		         	<GridListTile key={tile.id}>
-		            	<img src={tile.url} alt={tile.name} />
-		            	<GridListTileBar title={tile.name} classes={{root: classes.titleBar,title: classes.title,}}
+		        {extraImages.map((image) => (
+		         	<GridListTile key={image.id}>
+		            	<img src={image.url} alt={image.name} />
+		            	<GridListTileBar title={image.name} classes={{root: classes.titleBar,title: classes.title,}}
 			              actionIcon={
-			                <IconButton aria-label={`fave ${tile.name}`} onClick={() => handleFavorite(tile.id)}>
-			                  <FavoriteIcon className={classes.title} />
-			                </IconButton>
+				          	<FaveButton image={image} />
 			              }
 		            	/>
 		          	</GridListTile>
